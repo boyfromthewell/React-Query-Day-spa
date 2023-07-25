@@ -11,7 +11,7 @@ import { getAvailableAppointments } from '../utils';
 import { getMonthYearDetails, getNewMonthYear, MonthYear } from './monthYear';
 
 // for useQuery call
-async function getAppointments(
+export async function getAppointments(
   year: string,
   month: string,
 ): Promise<AppointmentDateMap> {
@@ -73,7 +73,8 @@ export function useAppointments(): UseAppointments {
   const fallback = {};
 
   const { data: appointments = fallback } = useQuery(
-    [queryKeys.appointments, monthYear.month],
+    // 년 월 바뀌면 데이터 패칭
+    [queryKeys.appointments, monthYear.year, monthYear.month],
     () => getAppointments(monthYear.year, monthYear.month),
   );
 
