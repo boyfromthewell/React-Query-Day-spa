@@ -77,13 +77,19 @@ export function useAppointments(): UseAppointments {
   //    2. The getAppointments query function needs monthYear.year and
   //       monthYear.month
   const fallback = {};
-
   const { data: appointments = fallback } = useQuery(
     // 년 월 바뀌면 데이터 패칭
     [queryKeys.appointments, monthYear.year, monthYear.month],
     () => getAppointments(monthYear.year, monthYear.month),
     {
       select: showAll ? undefined : selectFn,
+      // defalut option override
+      staleTime: 0,
+      cacheTime: 300000, // 5 min
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchOnWindowFocus: true,
+      refetchInterval: 60000, // 1분 단위로 데이터 리패칭
     },
   );
 

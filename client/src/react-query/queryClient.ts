@@ -15,6 +15,18 @@ function queryErrorHandler(error: unknown): void {
 
 // to satisfy typescript until this file has uncommented contents
 export const queryClient = new QueryClient({
+  // set default options
+  // 정보의 변동이 적거나 사용자 세션 동안 정보 변동이 거의 없는 treatments, staffs는 괜찮음
+  // appointments는 실시간으로 정보가 업데이트 되는것이 중요
+  defaultOptions: {
+    queries: {
+      staleTime: 60000,
+      cacheTime: 90000,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  },
   queryCache: new QueryCache({
     onError: queryErrorHandler,
   }),
